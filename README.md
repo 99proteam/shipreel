@@ -11,7 +11,13 @@ Every time you publish a GitHub release, shipreel reads the notes (or your `CHAN
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-support-ffdd00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/99proteam)
 
-[Quick start](#-2-minute-setup-github-action) · [CLI](#-cli) · [Config](#-configuration) · [Templates](#-templates) · [Custom templates](#-custom-templates) · [Support](#-support-this-project)
+### [▶ Try the live demo](https://99proteam.github.io/shipreel/) · [📦 npm](https://www.npmjs.com/package/shipreel) · [🚀 GitHub Action setup](#-2-minute-setup-github-action)
+
+<a href="https://buymeacoffee.com/99proteam"><img src="https://img.buymeacoffee.com/button-api/?text=Sponsor%20shipreel&emoji=%E2%98%95&slug=99proteam&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" alt="Sponsor shipreel on Buy Me a Coffee" height="60"></a>
+
+<sub>shipreel is free and open source. If it helps your releases, <a href="https://buymeacoffee.com/99proteam">a coffee</a> keeps it going. ☕</sub>
+
+[Install](#-installation) · [Quick start](#-2-minute-setup-github-action) · [CLI](#-cli) · [Config](#-configuration) · [Templates](#-templates) · [Custom templates](#-custom-templates) · [FAQ](#-faq--troubleshooting) · [Support](#-support-this-project)
 
 </div>
 
@@ -34,6 +40,53 @@ Most release announcements are a link to a changelog nobody clicks. Video gets m
 - **Every format at once:** landscape 1920×1080, square 1080×1080 and vertical 1080×1920 (Shorts / Reels / TikTok).
 - **On brand:** 3 built-in templates, your color, logo, Google Font, call to action and optional background music.
 - **Deterministic rendering:** HTML/CSS scenes are rendered frame by frame in headless Chromium and encoded with ffmpeg. The same input always gives the same video.
+
+## 📥 Installation
+
+There are three ways to use shipreel. All of them are free.
+
+| Way | Best for | Install |
+| --- | --- | --- |
+| **GitHub Action** | Automatic video on every release | Nothing to install. Add one workflow file ([setup](#-2-minute-setup-github-action)) |
+| **npx** (no install) | Trying it, one-off videos | `npx shipreel --changelog CHANGELOG.md` |
+| **Project dependency** | Teams and npm scripts | `npm i -D shipreel` (or `pnpm add -D shipreel`, `yarn add -D shipreel`) |
+| Global CLI | Using it across many repos | `npm i -g shipreel`, then run `shipreel` anywhere |
+
+### Requirements (CLI only)
+
+- **Node.js 20 or newer**. Check with `node -v`, and get it from [nodejs.org](https://nodejs.org).
+- **Chromium for rendering.** Download it once:
+  ```bash
+  npx playwright install chromium
+  # Linux servers / CI also need system libraries:
+  npx playwright install --with-deps chromium
+  ```
+  If Chromium isn't there, shipreel falls back to an installed **Google Chrome** or **Microsoft Edge**.
+- **ffmpeg** is bundled (`ffmpeg-static`). Nothing to install. To use your own build, set `SHIPREEL_FFMPEG=/path/to/ffmpeg`.
+
+Works on Windows, macOS and Linux.
+
+### Your first video in 60 seconds
+
+```bash
+cd your-project                      # a folder with a CHANGELOG.md
+npx playwright install chromium      # one time only
+npx shipreel --dry-run               # see which highlights will be used
+npx shipreel                         # render landscape, square and vertical MP4s into ./videos
+```
+
+As a project script (`npm i -D shipreel`):
+
+```json
+{
+  "scripts": {
+    "video": "shipreel --changelog CHANGELOG.md --out videos",
+    "video:preview": "shipreel preview"
+  }
+}
+```
+
+Then `npm run video`.
 
 ## 🚀 2-minute setup (GitHub Action)
 
@@ -234,11 +287,62 @@ Also exported: `parseChangelog`, `parseReleaseNotes`, `cleanItem`, `selectHighli
 4. **Render**: each scene is an HTML page served locally to headless Chromium (Playwright). For every frame, `document.getAnimations()` are paused and their `currentTime` is set, then a screenshot is taken.
 5. **Encode**: frames are piped into ffmpeg (`ffmpeg-static`), producing H.264 / yuv420p / faststart MP4s that every social platform accepts.
 
+## ❓ FAQ & troubleshooting
+
+<details>
+<summary><b>"Could not launch Chromium"</b></summary>
+
+Run `npx playwright install chromium` (on Linux CI: `npx playwright install --with-deps chromium`). Or install Google Chrome. shipreel uses it automatically. You can also point to any Chromium build with `SHIPREEL_CHROMIUM=/path/to/chrome`.
+</details>
+
+<details>
+<summary><b>The Action fails with 403 when uploading</b></summary>
+
+Give the workflow write access to releases:
+
+```yaml
+permissions:
+  contents: write
+```
+</details>
+
+<details>
+<summary><b>Which highlights will be picked?</b></summary>
+
+Run `npx shipreel --dry-run`, or paste your notes into the [live demo](https://99proteam.github.io/shipreel/). Features come first, then performance, breaking changes and other changes, up to `maxItems` (5). Fixes are shown as a count. Docs, chores, CI and dependency bumps are ignored.
+</details>
+
+<details>
+<summary><b>My changelog format isn't detected</b></summary>
+
+shipreel understands version headings like `## [1.2.0] - 2024-01-01`, `## 1.2.0 (2024-01-01)`, `# [1.2.0](link) (date)`, `## v1.2.0` and `## pkg@1.2.0`, plus sections such as *Added / Features / Fixed / Bug Fixes / Performance / Breaking Changes*. If yours isn't detected, use `--notes file.md --version 1.2.0`, and please [open an issue](https://github.com/99proteam/shipreel/issues/new) with a sample.
+</details>
+
+<details>
+<summary><b>Can I render a past release?</b></summary>
+
+Yes. Use `npx shipreel --release v1.2.0 --repo owner/name`, or run the Action with `workflow_dispatch` and the `tag` input (see [`examples/release-video.yml`](examples/release-video.yml)).
+</details>
+
+<details>
+<summary><b>How long does rendering take?</b></summary>
+
+About 30–40 seconds per 1080p size on a GitHub-hosted runner. Rendering only the sizes you need (`sizes: vertical`) is faster.
+</details>
+
+<details>
+<summary><b>Does it cost anything?</b></summary>
+
+No. shipreel is MIT-licensed, runs on free GitHub Actions minutes for public repos, and doesn't call any paid API.
+</details>
+
 ## 💜 Support this project
 
 shipreel is free and MIT-licensed, built and maintained in spare time. If it saves you time on every release, please consider supporting it:
 
-<a href="https://buymeacoffee.com/99proteam"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=99proteam&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" height="48"></a>
+<p align="center">
+  <a href="https://buymeacoffee.com/99proteam"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=%E2%98%95&slug=99proteam&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" height="70"></a>
+</p>
 
 | Tier | Amount | You get |
 | --- | --- | --- |

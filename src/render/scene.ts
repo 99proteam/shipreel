@@ -3,7 +3,7 @@ import type { SceneTiming } from '../timing.js';
 import type { SizeSpec } from '../types.js';
 import { ICONS, KIND_ICONS, KIND_LABELS } from './icons.js';
 import { BASE_CSS, RUNTIME_JS } from './runtime.js';
-import { escapeHtml, renderString } from './template.js';
+import { escapeHtml, renderString } from './mustache.js';
 
 /** Pick black or white text for a background color. */
 export function contrastColor(hex: string): string {

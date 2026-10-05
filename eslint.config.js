@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', 'videos', 'coverage', 'templates/**/*.js'] },
+  { ignores: ['dist', 'node_modules', 'videos', 'coverage', '_site', 'site-videos', 'templates/**/*.js'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

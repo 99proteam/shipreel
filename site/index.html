@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shipreel — turn release notes into announcement videos</title>
+<meta name="description" content="Free, open-source CLI and GitHub Action that turns GitHub release notes and CHANGELOG.md into short branded announcement videos for X, LinkedIn, Instagram and YouTube Shorts.">
+<meta name="keywords" content="release notes video, changelog video, github action, release announcement, social media video generator, youtube shorts, linkedin video, open source">
+<link rel="canonical" href="https://99proteam.github.io/shipreel/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="shipreel — release notes to announcement videos">
+<meta property="og:description" content="Every GitHub release gets a branded 15–30s video, automatically. Free and open source.">
+<meta property="og:url" content="https://99proteam.github.io/shipreel/">
+<meta property="og:image" content="https://99proteam.github.io/shipreel/images/template-minimal.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23a78bfa'/%3E%3Cpath d='M24 18l24 14-24 14z' fill='%230b0d12'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">▶</span>shipreel</a>
+  <nav aria-label="Main">
+    <a href="#demo">Live demo</a>
+    <a href="#install">Install</a>
+    <a href="#examples">Examples</a>
+    <a href="https://github.com/99proteam/shipreel">GitHub</a>
+    <a href="https://www.npmjs.com/package/shipreel">npm</a>
+  </nav>
+  <a class="btn btn-sponsor" href="https://buymeacoffee.com/99proteam" target="_blank" rel="noopener">☕ Sponsor</a>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <p class="eyebrow">Free &amp; open source · CLI · GitHub Action</p>
+    <h1>Every release deserves<br><span class="grad">an announcement video.</span></h1>
+    <p class="lead">shipreel reads your GitHub release notes or <code>CHANGELOG.md</code> and renders a branded 15–30 second video, ready for X, LinkedIn, Instagram and YouTube Shorts. Set it up once and every release gets a video.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#demo">Try it with your changelog</a>
+      <a class="btn btn-ghost" href="#install">Add it to GitHub in 2 minutes</a>
+    </div>
+    <div class="install-pill">
+      <code id="cmd-npx">npx shipreel --changelog CHANGELOG.md</code>
+      <button type="button" data-copy="cmd-npx" aria-label="Copy command">Copy</button>
+    </div>
+    <ul class="badges" aria-label="Highlights">
+      <li>No server, no account</li>
+      <li>Landscape · Square · Vertical</li>
+      <li>3 templates + custom HTML/CSS</li>
+      <li>MIT licensed</li>
+    </ul>
+  </section>
+
+  <section id="demo" class="demo" aria-labelledby="demo-title">
+    <div class="section-head">
+      <h2 id="demo-title">Live demo</h2>
+      <p>Paste any release notes. The preview runs in your browser with the same scenes the CLI renders to MP4.</p>
+    </div>
+    <div class="demo-grid" id="sr-demo">
+      <form class="panel controls" onsubmit="return false">
+        <div class="samples" role="group" aria-label="Load a sample">
+          <span>Samples:</span>
+          <button type="button" data-sample="keep-a-changelog.md" data-name="acme-ui" data-template="minimal">Keep a Changelog</button>
+          <button type="button" data-sample="conventional-changelog.md" data-name="fastq" data-template="terminal">Conventional</button>
+          <button type="button" data-sample="github-release-notes.md" data-name="uploadr" data-template="bold">GitHub release</button>
+        </div>
+        <label for="sr-notes">Release notes / CHANGELOG.md</label>
+        <textarea id="sr-notes" rows="11" spellcheck="false"></textarea>
+        <div class="row">
+          <div><label for="sr-name">Project name</label><input id="sr-name" value="acme-ui"></div>
+          <div><label for="sr-version">Version <span class="muted">(blank = latest)</span></label><input id="sr-version" placeholder="2.4.0"></div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="sr-template">Template</label>
+            <select id="sr-template"><option value="minimal">minimal</option><option value="terminal">terminal</option><option value="bold">bold</option></select>
+          </div>
+          <div><label for="sr-color">Brand color</label><input id="sr-color" type="color" value="#6d28d9"></div>
+          <div>
+            <label for="sr-max">Highlights</label>
+            <select id="sr-max"><option>3</option><option>4</option><option selected>5</option></select>
+          </div>
+        </div>
+        <div class="row">
+          <div><label for="sr-cta">Call to action</label><input id="sr-cta" value="npm i acme-ui@latest"></div>
+          <div><label for="sr-repo">GitHub repo</label><input id="sr-repo" value="acme/acme-ui" placeholder="owner/name"></div>
+        </div>
+        <label for="sr-logo">Logo <span class="muted">(optional, stays in your browser)</span></label>
+        <input id="sr-logo" type="file" accept="image/svg+xml,image/png,image/jpeg,image/webp">
+      </form>
+
+      <div class="panel player">
+        <div class="player-top">
+          <div class="sizes" role="group" aria-label="Video size">
+            <button type="button" data-size="landscape" aria-pressed="true">16:9</button>
+            <button type="button" data-size="square" aria-pressed="false">1:1</button>
+            <button type="button" data-size="vertical" aria-pressed="false">9:16</button>
+          </div>
+          <span id="sr-meta" class="muted"></span>
+        </div>
+        <div id="sr-stage" class="stage" data-orientation="landscape"><div id="sr-frame" class="frame"></div></div>
+        <div class="transport">
+          <button type="button" id="sr-play" aria-pressed="false">Play</button>
+          <input id="sr-scrub" type="range" min="0" max="0" value="0" aria-label="Timeline">
+          <span id="sr-time" class="muted mono">0.0s</span>
+        </div>
+        <div id="sr-scenes" class="chips"></div>
+        <p id="sr-error" class="error" hidden></p>
+        <h3>Selected highlights</h3>
+        <ul id="sr-highlights" class="highlights"></ul>
+        <p class="muted small">To get the MP4 files, run <code>npx shipreel</code> or add the GitHub Action (see below).</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="examples" class="examples" aria-labelledby="examples-title">
+    <div class="section-head">
+      <h2 id="examples-title">Real output</h2>
+      <p>Rendered by shipreel in CI from the changelogs in the repo's test fixtures. These are actual MP4 files.</p>
+    </div>
+    <div class="video-grid">
+      <figure><video src="videos/minimal.mp4" poster="images/template-minimal.png" muted loop playsinline controls preload="none"></video><figcaption><b>minimal</b> · Keep a Changelog</figcaption></figure>
+      <figure><video src="videos/terminal.mp4" poster="images/template-terminal.png" muted loop playsinline controls preload="none"></video><figcaption><b>terminal</b> · conventional-changelog</figcaption></figure>
+      <figure><video src="videos/bold.mp4" poster="images/template-bold.png" muted loop playsinline controls preload="none"></video><figcaption><b>bold</b> · release-please</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="install" class="install" aria-labelledby="install-title">
+    <div class="section-head">
+      <h2 id="install-title">Install &amp; use</h2>
+      <p>Pick one. Both are free.</p>
+    </div>
+    <div class="install-grid">
+      <article class="panel">
+        <h3><span class="num">A</span> GitHub Action <span class="tag">recommended</span></h3>
+        <p>Add this file as <code>.github/workflows/release-video.yml</code>. Each time you publish a release, the videos get attached to it.</p>
+<pre id="code-action"><code>name: Release video
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: 99proteam/shipreel@v1
+        with:
+          template: minimal</code></pre>
+        <button type="button" class="copy" data-copy="code-action">Copy workflow</button>
+      </article>
+      <article class="panel">
+        <h3><span class="num">B</span> CLI (Node.js 20+)</h3>
+        <p>Run it on your machine, no install needed:</p>
+<pre id="code-cli"><code># one-time: download the headless browser
+npx playwright install chromium
+
+# render from your changelog
+npx shipreel --changelog CHANGELOG.md -o videos
+
+# or from a GitHub release
+npx shipreel --release v2.4.0 --repo owner/name
+
+# preview scenes in the browser
+npx shipreel preview</code></pre>
+        <button type="button" class="copy" data-copy="code-cli">Copy commands</button>
+        <p class="small muted">Or add it to your project: <code>npm i -D shipreel</code>, then <code>"video": "shipreel"</code> in package.json scripts.</p>
+      </article>
+    </div>
+    <article class="panel config">
+      <h3>Make it yours: <code>shipreel.config.json</code></h3>
+<pre><code>{
+  "template": "bold",
+  "brandColor": "#ff5a1f",
+  "logo": "./assets/logo.svg",
+  "font": "Archivo",
+  "sizes": ["landscape", "square", "vertical"],
+  "cta": "npm i my-lib@latest",
+  "music": "./assets/music.mp3"
+}</code></pre>
+      <p class="small">Full reference, custom templates and library API: <a href="https://github.com/99proteam/shipreel#readme">README on GitHub</a>.</p>
+    </article>
+  </section>
+
+  <section class="how" aria-labelledby="how-title">
+    <div class="section-head"><h2 id="how-title">How it works</h2></div>
+    <ol class="steps">
+      <li><b>Parse</b><span>GitHub release bodies, Keep a Changelog, conventional-changelog, release-please, changesets or any markdown.</span></li>
+      <li><b>Pick</b><span>Up to 5 highlights, features first. PR links, commit hashes and @mentions are stripped and long lines shortened.</span></li>
+      <li><b>Render</b><span>HTML/CSS scenes are captured frame by frame in headless Chromium, so the same input always gives the same video.</span></li>
+      <li><b>Ship</b><span>ffmpeg encodes H.264 MP4s that every platform accepts. The Action attaches them to your release.</span></li>
+    </ol>
+  </section>
+
+  <section id="sponsor" class="sponsor" aria-labelledby="sponsor-title">
+    <h2 id="sponsor-title">Keep shipreel free</h2>
+    <p>shipreel is built and maintained in spare time. If it saves you time on every release, buy the maintainer a coffee.</p>
+    <a class="btn btn-sponsor btn-xl" href="https://buymeacoffee.com/99proteam" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+    <ul class="tiers">
+      <li><b>☕ Coffee</b><span>$5 one-time</span></li>
+      <li><b>🍕 Supporter</b><span>$10/month · name in README</span></li>
+      <li><b>🚀 Sponsor</b><span>$50/month · logo in README</span></li>
+      <li><b>🏆 Partner</b><span>$200/month · custom template</span></li>
+    </ul>
+    <p class="small">Or ⭐ <a href="https://github.com/99proteam/shipreel">star the repo</a>. It really helps.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>MIT © 99proteam</span>
+  <a href="https://github.com/99proteam/shipreel">GitHub</a>
+  <a href="https://www.npmjs.com/package/shipreel">npm</a>
+  <a href="https://github.com/99proteam/shipreel/blob/main/ROADMAP.md">Roadmap</a>
+  <a href="https://buymeacoffee.com/99proteam">Sponsor</a>
+</footer>
+<script src="assets/demo.js" defer></script>
+</body>
+</html>
