@@ -90,7 +90,8 @@ export function shorten(text: string, maxChars: number): string {
   const window = text.slice(0, maxChars);
   const minClause = Math.floor(maxChars * 0.45);
   for (const separator of [' — ', ' – ', ' - ', '; ', ': ', ' (', ', ']) {
-    const at = window.lastIndexOf(separator);
+    // A colon introduces details ("release: uses: x"), so the first one is the natural break.
+    const at = separator === ': ' ? window.indexOf(separator, minClause) : window.lastIndexOf(separator);
     if (at >= minClause) return window.slice(0, at).replace(/[\s,;:]+$/, '');
   }
   const space = window.slice(0, maxChars - 1).lastIndexOf(' ');

@@ -45,6 +45,11 @@ describe('shorten', () => {
   it('prefers clause boundaries', () => {
     expect(shorten('Dark mode tokens for every component, generated from a single brand color', 50)).toBe('Dark mode tokens for every component');
   });
+  it('cuts at the first colon so no dangling words remain', () => {
+    expect(shorten('GitHub Action that attaches videos to every published release: uses: 99proteam/shipreel@v1', 72)).toBe(
+      'GitHub Action that attaches videos to every published release',
+    );
+  });
   it('cuts at a word boundary with an ellipsis', () => {
     const out = shorten('one two three four five six seven eight nine ten eleven twelve', 30);
     expect(out).toBe('one two three four five six…');
