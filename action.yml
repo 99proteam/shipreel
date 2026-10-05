@@ -57,17 +57,20 @@ runs:
   using: 'composite'
   steps:
     - name: Install shipreel
+      id: install
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
         npm ci --no-audit --no-fund --loglevel=error
         npm run build --silent
+        # hashFiles() only works inside the workspace, so key the browser cache on the Playwright version.
+        echo "playwright=$(node -p "require('playwright/package.json').version")" >> "$GITHUB_OUTPUT"
 
     - name: Cache Chromium
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.cache/ms-playwright
-        key: shipreel-playwright-${{ runner.os }}-${{ hashFiles(format('{0}/package-lock.json', github.action_path)) }}
+        key: shipreel-playwright-${{ runner.os }}-${{ steps.install.outputs.playwright }}
 
     - name: Install Chromium
       shell: bash

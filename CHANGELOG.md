@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- GitHub Action no longer fails at the Chromium cache step (`hashFiles` outside the workspace)
+
 ## [1.0.0] - 2026-10-05
 
 ### Added

@@ -105,7 +105,7 @@ jobs:
   video:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: 99proteam/shipreel@v1
         with:
           template: minimal # minimal | terminal | bold
