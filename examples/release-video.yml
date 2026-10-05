@@ -1,0 +1,34 @@
+# Copy to .github/workflows/release-video.yml in your repository.
+name: Release video
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to render (e.g. v2.4.0)'
+        required: true
+
+permissions:
+  contents: write # needed to attach videos to the release
+
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render announcement video
+        id: shipreel
+        uses: 99proteam/shipreel@v1
+        with:
+          template: minimal # minimal | terminal | bold | ./path/to/template
+          sizes: landscape,square,vertical
+          tag: ${{ github.event.inputs.tag }}
+
+      # Optional: keep the videos as a workflow artifact too.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-videos
+          path: shipreel-videos/*.mp4

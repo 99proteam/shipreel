@@ -1,0 +1,89 @@
+name: 'shipreel - Release Notes to Video'
+description: 'Turn every GitHub release into a short branded announcement video (MP4) for X, LinkedIn, Instagram and YouTube Shorts.'
+author: '99proteam'
+branding:
+  icon: 'video'
+  color: 'purple'
+
+inputs:
+  template:
+    description: 'Template: minimal, terminal, bold, or a path to a custom template folder. Overrides the config file.'
+    required: false
+    default: ''
+  sizes:
+    description: 'Comma-separated sizes: landscape, square, vertical or WIDTHxHEIGHT. Overrides the config file.'
+    required: false
+    default: ''
+  config:
+    description: 'Path to a shipreel config JSON file (default: shipreel.config.json or the "shipreel" key in package.json).'
+    required: false
+    default: ''
+  upload:
+    description: 'Attach the videos to the GitHub release as assets.'
+    required: false
+    default: 'true'
+  github-token:
+    description: 'Token used to read the release and upload assets. Needs contents: write.'
+    required: false
+    default: ${{ github.token }}
+  tag:
+    description: 'Release tag to use when not triggered by a release event (e.g. workflow_dispatch).'
+    required: false
+    default: ''
+  changelog:
+    description: 'Read notes from this CHANGELOG.md instead of the release body.'
+    required: false
+    default: ''
+  output-dir:
+    description: 'Directory where videos are written.'
+    required: false
+    default: 'shipreel-videos'
+
+outputs:
+  videos:
+    description: 'Newline-separated list of rendered video paths.'
+    value: ${{ steps.render.outputs.videos }}
+  videos-json:
+    description: 'JSON array of rendered video paths.'
+    value: ${{ steps.render.outputs.videos-json }}
+  video:
+    description: 'Path of the first rendered video.'
+    value: ${{ steps.render.outputs.video }}
+  asset-urls:
+    description: 'Newline-separated download URLs of the uploaded release assets.'
+    value: ${{ steps.render.outputs.asset-urls }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install shipreel
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        npm ci --no-audit --no-fund --loglevel=error
+        npm run build --silent
+
+    - name: Cache Chromium
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: shipreel-playwright-${{ runner.os }}-${{ hashFiles(format('{0}/package-lock.json', github.action_path)) }}
+
+    - name: Install Chromium
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npx playwright install --with-deps chromium
+
+    - name: Render release video
+      id: render
+      shell: bash
+      env:
+        INPUT_TEMPLATE: ${{ inputs.template }}
+        INPUT_SIZES: ${{ inputs.sizes }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_UPLOAD: ${{ inputs.upload }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_TAG: ${{ inputs.tag }}
+        INPUT_CHANGELOG: ${{ inputs.changelog }}
+        INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
+      run: node "${{ github.action_path }}/dist/action.js"

@@ -1,0 +1,93 @@
+{
+  "name": "shipreel",
+  "version": "1.0.0",
+  "description": "Turn release notes and CHANGELOG.md into a short branded announcement video for X, LinkedIn, Instagram and YouTube Shorts. CLI, library and GitHub Action.",
+  "keywords": [
+    "release-notes",
+    "changelog",
+    "release",
+    "video",
+    "video-generator",
+    "announcement",
+    "social-media",
+    "github-action",
+    "github-actions",
+    "github-release",
+    "keep-a-changelog",
+    "conventional-changelog",
+    "semantic-release",
+    "marketing",
+    "devrel",
+    "open-source",
+    "cli",
+    "playwright",
+    "ffmpeg",
+    "mp4",
+    "youtube-shorts",
+    "instagram-reels",
+    "linkedin",
+    "twitter"
+  ],
+  "homepage": "https://github.com/99proteam/shipreel#readme",
+  "bugs": {
+    "url": "https://github.com/99proteam/shipreel/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/99proteam/shipreel.git"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/99proteam"
+  },
+  "license": "MIT",
+  "author": "99proteam",
+  "type": "module",
+  "bin": {
+    "shipreel": "dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "sample": "node dist/cli.js --changelog tests/fixtures/keep-a-changelog.md --name acme-ui --out ./videos",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "ffmpeg-static": "^5.3.0",
+    "playwright": "^1.55.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.12.0",
+    "ffprobe-static": "^3.1.0",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.40.0",
+    "vitest": "^3.2.4"
+  }
+}

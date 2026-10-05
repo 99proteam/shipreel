@@ -1,0 +1,12 @@
+<div class="window">
+  <div class="bar"><i></i><i></i><i></i><span class="title">~/{{projectName}}</span></div>
+  <div class="term">
+    <div class="line"><span class="ps">$</span> <span class="typed" data-split="chars">git tag {{versionLabel}}</span></div>
+    <div class="line out o1"><span class="sr-icon ok">{{{icons.check}}}</span> tagged {{versionLabel}}{{#dateLabel}} <span class="muted">· {{dateLabel}}</span>{{/dateLabel}}</div>
+    <div class="hero">
+      {{#logo}}<img class="hero-logo" src="{{{logo}}}" alt="">{{/logo}}
+      <div class="hero-name name-{{nameSize}}">{{projectName}}</div>
+      <div class="hero-version"><span class="brand">{{versionLabel}}</span> is out<span class="cursor"></span></div>
+    </div>
+  </div>
+</div>

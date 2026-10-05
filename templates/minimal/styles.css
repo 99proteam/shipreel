@@ -1,0 +1,114 @@
+/* shipreel "minimal" template: clean light design, one brand accent. */
+body { background: #f7f7f9; color: #111114; }
+
+.bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 1px 1px, rgba(17, 17, 20, 0.09) 1px, transparent 0) 0 0 / 3.2vmin 3.2vmin;
+}
+.glow {
+  position: absolute; width: 110vmin; height: 110vmin; right: -35vmin; top: -40vmin; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--brand) 24%, transparent), transparent);
+  animation: drift var(--duration) linear both;
+}
+
+.center {
+  position: absolute; inset: 0; padding: 8vmin;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.2vmin; text-align: center;
+}
+
+.logo {
+  width: 17vmin; height: 17vmin; border-radius: 4.5vmin; display: grid; place-items: center;
+  background: var(--brand); color: var(--brand-contrast);
+  box-shadow: 0 2.4vmin 6vmin color-mix(in srgb, var(--brand) 35%, transparent);
+  animation: pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.05s both;
+}
+.logo.has-img { background: transparent; box-shadow: none; border-radius: 0; }
+.logo img { width: 100%; height: 100%; object-fit: contain; }
+.logo.small { width: 11vmin; height: 11vmin; border-radius: 3vmin; }
+.monogram { font-size: 9vmin; font-weight: 800; letter-spacing: -0.04em; }
+.logo.small .monogram { font-size: 6vmin; }
+
+.name { font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; overflow-wrap: anywhere; max-width: 92%; }
+.name { font-size: min(var(--size), calc((100vw - 16vmin) / (var(--name-chars) * 0.58))); }
+.name-l { --size: 13vmin; }
+.name-m { --size: 11vmin; }
+.name-s { --size: 8vmin; }
+.name .sr-word { animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(0.2s + var(--i) * 0.08s); }
+
+.pill {
+  font-size: 4.4vmin; font-weight: 600; padding: 1.4vmin 3.4vmin; border-radius: 99px;
+  background: #fff; border: 0.25vmin solid rgba(17, 17, 20, 0.08);
+  box-shadow: 0 1vmin 3vmin rgba(17, 17, 20, 0.06);
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+}
+.pill-version { color: var(--brand); font-weight: 800; }
+.date { font-size: 2.6vmin; color: #6b6b76; font-weight: 500; animation: fade 0.6s 0.8s both; }
+
+/* Highlight */
+.frame { position: absolute; inset: 0; padding: 9vmin 10vmin; display: flex; flex-direction: column; justify-content: space-between; }
+.sr-portrait .frame { padding: 14vmin 9vmin; }
+.top, .footer { display: flex; justify-content: space-between; align-items: center; }
+.badge {
+  display: inline-flex; align-items: center; gap: 1.2vmin; padding: 1.3vmin 2.6vmin; border-radius: 99px;
+  font-size: 2.8vmin; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--brand); background: color-mix(in srgb, var(--brand) 11%, white);
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+}
+.badge.kind-breaking { color: #b42318; background: #fde8e7; }
+.badge.kind-performance { color: #a15c07; background: #fdf1dc; }
+.badge-icon { width: 3.4vmin; height: 3.4vmin; }
+.counter { font-size: 2.8vmin; font-weight: 600; color: #8a8a95; font-variant-numeric: tabular-nums; animation: fade 0.5s 0.2s both; }
+
+.body { display: flex; flex-direction: column; gap: 4vmin; }
+.accent {
+  width: 12vmin; height: 1.2vmin; border-radius: 99px; background: var(--brand); transform-origin: left;
+  animation: grow 0.6s cubic-bezier(0.7, 0, 0.2, 1) 0.15s both;
+}
+.headline { font-weight: 750; letter-spacing: -0.035em; line-height: 1.08; max-width: 88%; text-wrap: balance; }
+.sr-portrait .headline { max-width: 100%; }
+.headline.size-xl { font-size: 12.5vmin; }
+.headline.size-l { font-size: 10vmin; }
+.headline.size-m { font-size: 8vmin; }
+.headline.size-s { font-size: 6.6vmin; }
+.sr-portrait .headline.size-xl { font-size: 11.5vmin; }
+.sr-portrait .headline.size-l { font-size: 9vmin; }
+.sr-portrait .headline.size-m { font-size: 7.4vmin; }
+.sr-portrait .headline.size-s { font-size: 6.2vmin; }
+.headline .sr-word { animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(0.25s + var(--i) * 0.05s); }
+
+.brand-mini { font-size: 2.6vmin; font-weight: 600; color: #6b6b76; animation: fade 0.5s 0.3s both; }
+.dots { display: flex; gap: 1.2vmin; animation: fade 0.5s 0.3s both; }
+.dots i { display: block; width: 1.5vmin; height: 1.5vmin; border-radius: 99px; background: rgba(17, 17, 20, 0.14); }
+.dots i.done { background: color-mix(in srgb, var(--brand) 45%, white); }
+.dots i.on { width: 5vmin; background: var(--brand); }
+
+/* Fixes */
+.fix-icon {
+  width: 11vmin; height: 11vmin; padding: 2.4vmin; border-radius: 50%; color: #fff; background: #16a34a;
+  box-shadow: 0 2vmin 5vmin rgba(22, 163, 74, 0.3); animation: pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.fix-number { font-size: 22vmin; font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; font-variant-numeric: tabular-nums; animation: rise 0.5s 0.1s both; }
+.count { animation: count 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+.fix-label { font-size: 6vmin; font-weight: 700; letter-spacing: -0.02em; animation: rise 0.5s 0.35s both; }
+.fix-sub { font-size: 3vmin; color: #6b6b76; animation: fade 0.5s 0.6s both; }
+
+/* Outro */
+.eyebrow { font-size: 3.4vmin; font-weight: 600; color: #6b6b76; text-transform: uppercase; letter-spacing: 0.12em; animation: rise 0.5s 0.15s both; }
+.cta {
+  display: inline-flex; gap: 2vmin; align-items: center; max-width: 92%;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 4.6vmin; font-weight: 600;
+  padding: 2.6vmin 4vmin; border-radius: 2.2vmin; background: #111114; color: #fff; overflow-wrap: anywhere;
+  box-shadow: 0 2vmin 6vmin rgba(17, 17, 20, 0.18); animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+.prompt { color: color-mix(in srgb, var(--brand) 55%, white); }
+.star { display: inline-flex; align-items: center; gap: 1.6vmin; font-size: 4vmin; font-weight: 700; animation: rise 0.5s 0.6s both; }
+.star-icon { width: 4.4vmin; height: 4.4vmin; color: #eab308; }
+.star-icon svg { fill: currentColor; }
+.repo { font-size: 2.8vmin; color: #6b6b76; font-weight: 500; animation: fade 0.5s 0.8s both; }
+
+@keyframes pop { from { opacity: 0; transform: scale(0.6) rotate(-8deg); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(3.5vmin); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(-8vmin, 5vmin) scale(1.1); } }
+@keyframes count { from { --sr-count: 0; } to { --sr-count: var(--target); } }

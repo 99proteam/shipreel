@@ -1,0 +1,32 @@
+/* Example custom template. Every value scales with vmin so one design works at every size. */
+body { background: linear-gradient(160deg, #0f0c29, #1a1440 55%, #0b0a1a); color: #fff; }
+
+.glow {
+  position: absolute; width: 80vmin; height: 80vmin; left: 50%; top: 50%; margin: -40vmin 0 0 -40vmin; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--brand) 45%, transparent), transparent);
+  animation: pulse var(--duration) ease-in-out both;
+}
+.wrap {
+  position: absolute; inset: 0; padding: 10vmin; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; gap: 3vmin;
+}
+.logo { width: 14vmin; height: 14vmin; object-fit: contain; animation: rise 0.5s both; }
+.title { font-size: min(14vmin, calc((100vw - 20vmin) / (var(--name-chars) * 0.6))); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.title .sr-word { animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(0.15s + var(--i) * 0.08s); }
+.sub { font-size: 5vmin; display: inline-flex; align-items: center; gap: 1.5vmin; animation: rise 0.5s 0.4s both; }
+.sub b { color: var(--brand); text-shadow: 0 0 3vmin var(--brand); }
+.label { font-size: 3vmin; text-transform: uppercase; letter-spacing: 0.15em; color: var(--brand); display: inline-flex; gap: 1.2vmin; align-items: center; animation: rise 0.4s both; }
+.icon { width: 1.2em; height: 1.2em; display: inline-block; }
+.text { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-wrap: balance; }
+.text.size-xl { font-size: 12vmin; }
+.text.size-l { font-size: 9.5vmin; }
+.text.size-m { font-size: 7.5vmin; }
+.text.size-s { font-size: 6vmin; }
+.text .sr-word { animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(0.2s + var(--i) * 0.05s); }
+.count { animation: count 1s ease-out 0.2s both; }
+.cta { font-size: 5vmin; font-weight: 700; padding: 2.5vmin 4vmin; border: 0.4vmin solid var(--brand); border-radius: 2vmin; box-shadow: 0 0 4vmin color-mix(in srgb, var(--brand) 50%, transparent); animation: rise 0.5s 0.2s both; }
+.foot { font-size: 3vmin; opacity: 0.7; animation: rise 0.5s 0.7s both; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(3vmin); } to { opacity: 1; transform: none; } }
+@keyframes pulse { from { transform: scale(0.85); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
+@keyframes count { from { --sr-count: 0; } to { --sr-count: var(--target); } }

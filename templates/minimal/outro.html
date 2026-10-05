@@ -1,0 +1,8 @@
+<div class="bg"><div class="glow"></div></div>
+<div class="center">
+  <div class="logo small {{#logo}}has-img{{/logo}}">{{#logo}}<img src="{{{logo}}}" alt="">{{/logo}}{{^logo}}<span class="monogram">{{monogram}}</span>{{/logo}}</div>
+  <div class="eyebrow">Get {{projectName}} {{versionLabel}}</div>
+  {{#cta}}<div class="cta">{{#ctaIsCommand}}<span class="prompt">$</span>{{/ctaIsCommand}}<span>{{cta}}</span></div>{{/cta}}
+  {{#ctaSecondary}}<div class="star"><span class="sr-icon star-icon">{{{icons.star}}}</span>{{ctaSecondary}}</div>{{/ctaSecondary}}
+  {{#footerLabel}}<div class="repo">{{footerLabel}}</div>{{/footerLabel}}
+</div>

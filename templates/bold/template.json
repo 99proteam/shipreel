@@ -1,0 +1,7 @@
+{
+  "name": "bold",
+  "description": "Big type and brand color blocks with hard wipes.",
+  "defaults": { "font": "Archivo", "brandColor": "#ff5a1f" },
+  "scenes": { "intro": "intro.html", "highlight": "highlight.html", "fixes": "fixes.html", "outro": "outro.html" },
+  "styles": ["styles.css"]
+}

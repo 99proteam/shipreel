@@ -1,0 +1,9 @@
+{
+  "name": "shipreel",
+  "template": "terminal",
+  "brandColor": "#a78bfa",
+  "cta": "npx shipreel@latest",
+  "ctaSecondary": "Star us on GitHub",
+  "repo": "99proteam/shipreel",
+  "sizes": ["landscape", "square", "vertical"]
+}

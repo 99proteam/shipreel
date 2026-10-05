@@ -1,0 +1,95 @@
+/* shipreel "bold" template: big type, brand color blocks, hard wipes. */
+body { background: #0b0b0c; color: #fff; }
+
+.stage {
+  position: absolute; inset: 0; padding: 9vmin 10vmin;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 3vmin;
+}
+.sr-portrait .stage { padding: 16vmin 8vmin; }
+.stage.center { justify-content: center; align-items: center; text-align: center; }
+
+.wipe { position: absolute; inset: 0; background: var(--brand); animation: wipe 0.55s cubic-bezier(0.8, 0, 0.2, 1) both; }
+.dark { position: absolute; inset: 0; background: #0b0b0c; }
+
+/* Intro */
+.block { position: absolute; background: #0b0b0c; }
+.block-a { right: 0; top: 0; width: 38%; height: 46%; transform-origin: right; animation: slide-x 0.6s cubic-bezier(0.8, 0, 0.2, 1) 0.35s both; }
+.sr-portrait .block-a { width: 60%; height: 30%; }
+.logo { width: 14vmin; height: 14vmin; object-fit: contain; animation: rise 0.5s 0.4s both; }
+.title {
+  color: var(--brand-contrast); font-weight: 900; text-transform: uppercase; letter-spacing: -0.045em; line-height: 0.86;
+  overflow-wrap: anywhere;
+}
+/* Never wider than the screen: cap by the number of characters in the name. */
+.title { font-size: min(var(--size), calc((100vw - 20vmin) / (var(--name-chars) * 0.7))); }
+.sr-portrait .title { font-size: min(var(--size), calc((100vw - 16vmin) / (var(--name-chars) * 0.7))); }
+.title.name-l { --size: 19vmin; }
+.title.name-m { --size: 15vmin; }
+.title.name-s { --size: 11vmin; }
+.title .sr-word { animation: up 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) both; animation-delay: calc(0.35s + var(--i) * 0.08s); }
+.row { display: flex; align-items: center; gap: 3vmin; flex-wrap: wrap; }
+.tag {
+  background: #0b0b0c; color: #fff; font-weight: 900; font-size: 8vmin; letter-spacing: -0.03em; padding: 1vmin 3vmin 1.4vmin;
+  animation: slide-x 0.5s cubic-bezier(0.8, 0, 0.2, 1) 0.75s both; transform-origin: left;
+}
+.out { color: var(--brand-contrast); font-weight: 900; font-size: 8vmin; text-transform: uppercase; letter-spacing: -0.03em; animation: rise 0.45s 1s both; }
+
+/* Highlight */
+.hl-bg { position: absolute; inset: 0; background: var(--brand); }
+.hl-bg.even { background: #0b0b0c; }
+.corner { position: absolute; left: 0; top: 0; width: 34vmin; height: 34vmin; background: #0b0b0c; transform-origin: top left; animation: corner 0.55s cubic-bezier(0.8, 0, 0.2, 1) 0.05s both; }
+.corner.even { background: var(--brand); }
+.hl { justify-content: space-between; }
+.hl.odd { color: var(--brand-contrast); }
+.hl-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 4vmin; }
+.num { font-weight: 900; font-size: 16vmin; line-height: 0.8; letter-spacing: -0.05em; margin: -1vmin 0 0 -1vmin; animation: rise 0.45s 0.25s both; }
+.hl.odd .num { color: var(--brand); }
+.hl.even .num { color: #0b0b0c; }
+.kind {
+  display: inline-flex; align-items: center; gap: 1.4vmin; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 2.8vmin; padding: 1.4vmin 2.4vmin; animation: rise 0.45s 0.3s both;
+}
+.hl.odd .kind { background: #0b0b0c; color: #fff; }
+.hl.even .kind { background: var(--brand); color: var(--brand-contrast); }
+.kind-icon { width: 3.2vmin; height: 3.2vmin; }
+.hl-text { font-weight: 850; letter-spacing: -0.04em; line-height: 1.02; max-width: 94%; text-wrap: balance; }
+.hl-text.size-xl { font-size: 13vmin; }
+.hl-text.size-l { font-size: 10.5vmin; }
+.hl-text.size-m { font-size: 8.4vmin; }
+.hl-text.size-s { font-size: 6.8vmin; }
+.sr-portrait .hl-text.size-xl { font-size: 12vmin; }
+.sr-portrait .hl-text.size-l { font-size: 9.6vmin; }
+.sr-portrait .hl-text.size-m { font-size: 7.8vmin; }
+.sr-portrait .hl-text.size-s { font-size: 6.4vmin; }
+.hl-text .sr-word { animation: up 0.5s cubic-bezier(0.2, 0.9, 0.2, 1) both; animation-delay: calc(0.3s + var(--i) * 0.045s); }
+.bars { display: flex; gap: 1.2vmin; animation: fade 0.4s 0.4s both; }
+.bars i { display: block; height: 1vmin; flex: 1; max-width: 9vmin; background: currentColor; opacity: 0.25; }
+.bars i.done { opacity: 0.6; }
+.bars i.on { opacity: 1; }
+
+/* Fixes */
+.stripe { position: absolute; left: -10%; right: -10%; top: 50%; height: 34vmin; margin-top: -17vmin; background: var(--brand); transform: rotate(-6deg); transform-origin: center; animation: stripe 0.6s cubic-bezier(0.8, 0, 0.2, 1) both; }
+.big-number { font-weight: 900; font-size: 34vmin; line-height: 0.82; letter-spacing: -0.06em; color: #fff; font-variant-numeric: tabular-nums; animation: rise 0.45s 0.2s both; mix-blend-mode: normal; }
+.count { animation: count 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s both; }
+.big-label { font-weight: 900; text-transform: uppercase; font-size: 7vmin; letter-spacing: -0.02em; background: #0b0b0c; padding: 1vmin 3vmin; animation: rise 0.45s 0.45s both; }
+
+/* Outro */
+.eyebrow { color: var(--brand-contrast); font-weight: 900; text-transform: uppercase; font-size: 12vmin; letter-spacing: -0.045em; line-height: 0.9; animation: up 0.55s cubic-bezier(0.2, 0.9, 0.2, 1) 0.3s both; }
+.cta-box {
+  align-self: flex-start; max-width: 100%; background: #0b0b0c; color: #fff; overflow-wrap: anywhere;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 700; font-size: 5vmin; padding: 2.6vmin 3.6vmin;
+  animation: slide-x 0.5s cubic-bezier(0.8, 0, 0.2, 1) 0.55s both; transform-origin: left;
+}
+.star { display: flex; align-items: center; gap: 1.8vmin; color: var(--brand-contrast); font-weight: 900; font-size: 5vmin; text-transform: uppercase; letter-spacing: -0.02em; animation: rise 0.45s 0.85s both; }
+.star-icon { width: 5.4vmin; height: 5.4vmin; }
+.star-icon svg { fill: currentColor; }
+.foot { color: var(--brand-contrast); opacity: 0.75; font-weight: 600; font-size: 3vmin; animation: fade 0.4s 1.05s both; }
+
+@keyframes wipe { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes slide-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes corner { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes stripe { from { transform: rotate(-6deg) scaleX(0); } to { transform: rotate(-6deg) scaleX(1); } }
+@keyframes up { from { opacity: 0; transform: translateY(0.5em); clip-path: inset(0 0 100% 0); } to { opacity: 1; transform: none; clip-path: inset(-20% -10% -20% -10%); } }
+@keyframes rise { from { opacity: 0; transform: translateY(3vmin); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes count { from { --sr-count: 0; } to { --sr-count: var(--target); } }

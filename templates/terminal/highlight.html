@@ -1,0 +1,14 @@
+<div class="window">
+  <div class="bar"><i></i><i></i><i></i><span class="title">CHANGELOG.md — {{versionLabel}}</span></div>
+  <div class="term">
+    <div class="line meta">
+      <span class="tag kind-{{kind}}"><span class="sr-icon tag-icon">{{{icon}}}</span>{{kindLabel}}</span>
+      <span class="muted">[{{index}}/{{total}}]</span>
+    </div>
+    <div class="hl">
+      <span class="plus">+</span>
+      <p class="hl-text size-{{textSize}}" data-split="words">{{text}}</p>
+    </div>
+    <div class="progress">{{#dots}}<i class="{{#active}}on{{/active}}{{#done}}done{{/done}}"></i>{{/dots}}<span class="muted">{{projectName}}@{{version}}</span></div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+videos/
+shipreel-videos/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+.env

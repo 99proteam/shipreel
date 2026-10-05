@@ -1,0 +1,10 @@
+<div class="window">
+  <div class="bar"><i></i><i></i><i></i><span class="title">~/your-project</span></div>
+  <div class="term">
+    <div class="line muted o0"># upgrade today</div>
+    {{#ctaCommand}}<div class="line cta"><span class="ps">$</span> <span class="typed" data-split="chars">{{ctaCommand}}</span></div>
+    <div class="line out o1"><span class="sr-icon ok">{{{icons.check}}}</span> {{projectName}}@{{version}} ready</div>{{/ctaCommand}}
+    {{#ctaSecondary}}<div class="star o2"><span class="sr-icon star-icon">{{{icons.star}}}</span>{{ctaSecondary}}</div>{{/ctaSecondary}}
+    {{#footerLabel}}<div class="line muted o3">{{footerLabel}}<span class="cursor"></span></div>{{/footerLabel}}
+  </div>
+</div>

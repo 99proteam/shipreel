@@ -1,0 +1,15 @@
+{
+  "name": "my-project",
+  "template": "minimal",
+  "brandColor": "#6d28d9",
+  "logo": "./assets/logo.svg",
+  "font": "Inter",
+  "sizes": ["landscape", "square", "vertical"],
+  "cta": "npm i my-project@latest",
+  "ctaSecondary": "Star us on GitHub",
+  "url": "https://my-project.dev",
+  "maxItems": 5,
+  "music": "./assets/music.mp3",
+  "fps": 30,
+  "outDir": "videos"
+}
