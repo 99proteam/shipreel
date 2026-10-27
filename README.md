@@ -9,13 +9,13 @@ Every time you publish a GitHub release, shipreel reads the notes (or your `CHAN
 [![npm](https://img.shields.io/npm/v/shipreel?color=a78bfa)](https://www.npmjs.com/package/shipreel)
 [![CI](https://github.com/99proteam/shipreel/actions/workflows/ci.yml/badge.svg)](https://github.com/99proteam/shipreel/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-support-ffdd00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/99proteam)
+[![Sponsor on GitHub](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-db61a2?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/99proteam)
 
 ### [▶ Try the live demo](https://99proteam.github.io/shipreel/) · [📦 npm](https://www.npmjs.com/package/shipreel) · [🚀 GitHub Action setup](#-2-minute-setup-github-action)
 
-<a href="https://buymeacoffee.com/99proteam"><img src="https://img.buymeacoffee.com/button-api/?text=Sponsor%20shipreel&emoji=%E2%98%95&slug=99proteam&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" alt="Sponsor shipreel on Buy Me a Coffee" height="60"></a>
+<a href="https://github.com/sponsors/99proteam"><img src="https://img.shields.io/badge/%F0%9F%92%96_Sponsor_shipreel-Goal_$5k%2Fmonth-db61a2?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0d1117" alt="Sponsor shipreel on GitHub Sponsors" height="40"></a>
 
-<sub>shipreel is free and open source. If it helps your releases, <a href="https://buymeacoffee.com/99proteam">a coffee</a> keeps it going. ☕</sub>
+<sub>shipreel is free and open source. If it helps your releases, <a href="https://github.com/sponsors/99proteam">sponsor it on GitHub</a> 💖 (or <a href="https://buymeacoffee.com/99proteam">buy me a coffee</a>).</sub>
 
 [Install](#-installation) · [Quick start](#-2-minute-setup-github-action) · [CLI](#-cli) · [Config](#-configuration) · [Templates](#-templates) · [Custom templates](#-custom-templates) · [FAQ](#-faq--troubleshooting) · [Support](#-support-this-project)
 
@@ -133,6 +133,8 @@ my-project-v2.4.0-vertical.mp4
 | `tag` | | Release tag to render when not triggered by a `release` event (e.g. `workflow_dispatch`) |
 | `changelog` | | Read notes from this `CHANGELOG.md` instead of the release body |
 | `output-dir` | `shipreel-videos` | Where videos are written |
+| `poster` | from config, else `false` | Also save a PNG poster (thumbnail) per video and upload it |
+| `gif` | from config, else `false` | Also export a GIF per video and upload it |
 
 ### Action outputs
 
@@ -142,6 +144,8 @@ my-project-v2.4.0-vertical.mp4
 | `videos-json` | JSON array of video paths |
 | `video` | First video path |
 | `asset-urls` | Download URLs of the uploaded release assets |
+| `posters` | Newline-separated PNG poster paths (with `poster`) |
+| `gifs` | Newline-separated GIF paths (with `gif`) |
 
 The job summary also lists the selected highlights and links to every video. A ready-to-copy workflow with `workflow_dispatch` and artifact upload lives in [`examples/release-video.yml`](examples/release-video.yml).
 
@@ -176,6 +180,8 @@ npx shipreel --changelog CHANGELOG.md --dry-run
 | `-t, --template <name\|path>` | Template |
 | `-s, --sizes <list>` | `landscape,square,vertical` or `WIDTHxHEIGHT` |
 | `--name`, `--brand-color`, `--cta`, `--fps`, `--max-items` | Override config values |
+| `--poster` | Also save a PNG poster (the settled intro title card) next to each video |
+| `--gif` | Also export a looping GIF (15 fps, longest side 720 px) next to each video |
 | `-o, --out <dir>` | Output directory (default `./videos`) |
 | `--dry-run` | Print highlights and timing as JSON |
 | `--json` | Print rendered files as JSON |
@@ -217,6 +223,8 @@ Put a `shipreel.config.json` in your repo root, or a `"shipreel"` key in `packag
 | `minDuration` / `maxDuration` | seconds | `15` / `30` | Video length bounds |
 | `outDir` | path | `videos` | CLI output directory |
 | `changelog` | path | `CHANGELOG.md` | Default changelog for the CLI |
+| `poster` | boolean | `false` | Save `<video>.png`, a poster/thumbnail of the intro title card, for YouTube thumbnails, link previews and `<video poster>` |
+| `gif` | boolean | `false` | Save `<video>.gif` (15 fps, longest side 720 px), for READMEs, chat and docs |
 
 ### Video structure
 
@@ -338,11 +346,13 @@ No. shipreel is MIT-licensed, runs on free GitHub Actions minutes for public rep
 
 ## 💜 Support this project
 
-shipreel is free and MIT-licensed, built and maintained in spare time. If it saves you time on every release, please consider supporting it:
+shipreel is free and MIT-licensed. If it saves you time on every release, please become a sponsor on **[GitHub Sponsors](https://github.com/sponsors/99proteam)**. Our goal is **$5,000 a month** so shipreel can be maintained full time and ship new templates and auto-posting sooner.
 
 <p align="center">
-  <a href="https://buymeacoffee.com/99proteam"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=%E2%98%95&slug=99proteam&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" height="70"></a>
+  <a href="https://github.com/sponsors/99proteam"><img src="https://img.shields.io/badge/%F0%9F%92%96_Sponsor_on_GitHub-Goal_$5k%2Fmonth-db61a2?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0d1117" alt="Sponsor shipreel on GitHub" height="56"></a>
 </p>
+
+One-off support is welcome too on [Buy Me a Coffee](https://buymeacoffee.com/99proteam). Supporter perks:
 
 | Tier | Amount | You get |
 | --- | --- | --- |
@@ -355,7 +365,7 @@ Other ways to help: ⭐ star the repo, share a video you made with shipreel, or 
 
 ### Supporters
 
-_Be the first!_ [buymeacoffee.com/99proteam](https://buymeacoffee.com/99proteam)
+_Be the first!_ [github.com/sponsors/99proteam](https://github.com/sponsors/99proteam)
 
 ## 🤝 Contributing
 

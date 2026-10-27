@@ -45,6 +45,7 @@ async function run(): Promise<void> {
   const repo = process.env.GITHUB_REPOSITORY;
   const upload = !/^(false|0|no|off)$/i.test(getInput('upload') || 'true');
   const tagInput = getInput('tag');
+  const flag = (name: string) => (getInput(name) ? /^(true|1|yes|on)$/i.test(getInput(name)) : undefined);
 
   const config = loadConfig({
     configPath: getInput('config') || undefined,
@@ -53,6 +54,8 @@ async function run(): Promise<void> {
       sizes: getInput('sizes') || undefined,
       outDir: getInput('output-dir') || undefined,
       repo: repo || undefined,
+      poster: flag('poster'),
+      gif: flag('gif'),
     },
   });
 
@@ -93,16 +96,19 @@ async function run(): Promise<void> {
     },
   });
 
-  const relative = videos.map((v) => path.relative(process.cwd(), v.file) || v.file);
+  const rel = (file: string) => path.relative(process.cwd(), file) || file;
+  const relative = videos.map((v) => rel(v.file));
+  const posters = videos.flatMap((v) => (v.poster ? [rel(v.poster)] : []));
+  const gifs = videos.flatMap((v) => (v.gif ? [rel(v.gif)] : []));
   const urls: string[] = [];
   if (upload && ghRelease && repo) {
     if (!token) throw new Error('github-token is required to upload release assets');
     // Re-read the release so assets uploaded by a previous run are replaced, not duplicated.
     let fresh = await getRelease(repo, ghRelease.id, token);
-    for (const video of videos) {
-      const asset = await uploadReleaseAsset(repo, fresh, video.file, token);
+    for (const file of videos.flatMap((v) => [v.file, v.poster, v.gif].filter((f): f is string => Boolean(f)))) {
+      const asset = await uploadReleaseAsset(repo, fresh, file, token);
       urls.push(asset.browser_download_url);
-      log(`  uploaded ${path.basename(video.file)} -> ${asset.browser_download_url}`);
+      log(`  uploaded ${path.basename(file)} -> ${asset.browser_download_url}`);
       fresh = await getRelease(repo, ghRelease.id, token);
     }
   } else if (upload) {
@@ -113,6 +119,8 @@ async function run(): Promise<void> {
   setOutput('video', relative[0] ?? '');
   setOutput('videos-json', JSON.stringify(relative));
   setOutput('asset-urls', urls.join('\n'));
+  setOutput('posters', posters.join('\n'));
+  setOutput('gifs', gifs.join('\n'));
 
   summary(
     [

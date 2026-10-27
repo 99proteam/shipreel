@@ -6,8 +6,6 @@ shipreel's goal: **every release gets a video, with zero effort.** Ideas below a
 
 - [ ] **More templates**: gradient, glassmorphism, retro, and a "changelog card" style
 - [ ] **Template gallery site** with live previews
-- [ ] **Poster / thumbnail export** (PNG) next to each video
-- [ ] **GIF export** for READMEs and chat
 - [ ] **Per-size layout overrides** in templates (e.g. `highlight.vertical.html`)
 - [ ] Monorepo support: one video per changed package, or one combined video
 
@@ -30,5 +28,7 @@ shipreel's goal: **every release gets a video, with zero effort.** Ideas below a
 - [x] Custom HTML/CSS templates
 - [x] Browser preview
 - [x] Dogfooding: every shipreel release ships its own video
+- [x] Poster / thumbnail export (PNG) next to each video
+- [x] GIF export for READMEs and chat
 
 Have an idea that isn't here? [Open an issue](https://github.com/99proteam/shipreel/issues/new).

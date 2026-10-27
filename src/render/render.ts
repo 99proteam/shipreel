@@ -1,11 +1,11 @@
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Browser, CDPSession, Page } from 'playwright';
 import type { VideoPlan } from '../plan.js';
 import { startSceneServer } from '../server.js';
 import type { SizeSpec } from '../types.js';
 import { launchBrowser } from './browser.js';
-import { startEncoder } from './encode.js';
+import { convertToGif, startEncoder } from './encode.js';
 
 export interface RenderProgress {
   size: SizeSpec;
@@ -23,6 +23,10 @@ export interface RenderOptions {
   browser?: Browser;
   /** JPEG quality of captured frames (1-100). Default 92. */
   frameQuality?: number;
+  /** Also save a PNG poster per size. Defaults to config.poster. */
+  poster?: boolean;
+  /** Also export a GIF per size. Defaults to config.gif. */
+  gif?: boolean;
 }
 
 export interface RenderedVideo {
@@ -30,6 +34,10 @@ export interface RenderedVideo {
   file: string;
   frames: number;
   durationSeconds: number;
+  /** PNG poster (the settled intro scene), when posters are enabled. */
+  poster?: string;
+  /** Animated GIF, when GIF export is enabled. */
+  gif?: string;
 }
 
 export function slugify(value: string): string {
@@ -63,7 +71,14 @@ async function capture(page: Page, cdp: CDPSession | undefined, quality: number)
   return page.screenshot({ type: 'jpeg', quality, animations: 'allow', caret: 'hide' });
 }
 
-async function renderSize(browser: Browser, baseUrl: string, plan: VideoPlan, size: SizeSpec, file: string, options: RenderOptions) {
+async function renderSize(
+  browser: Browser,
+  baseUrl: string,
+  plan: VideoPlan,
+  size: SizeSpec,
+  file: string,
+  options: RenderOptions & { posterFile?: string },
+): Promise<RenderedVideo> {
   const { timeline } = plan;
   const context = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: 1 });
   const page = await context.newPage();
@@ -88,6 +103,9 @@ async function renderSize(browser: Browser, baseUrl: string, plan: VideoPlan, si
         const ms = (f / timeline.fps) * 1000;
         await page.evaluate((t) => (window as unknown as { __shipreelSeek: (ms: number) => number }).__shipreelSeek(t), ms);
         await encoder.write(await capture(page, cdp, quality));
+        if (options.posterFile && index === 0 && f === posterFrame(scene.frames, timeline.fps)) {
+          writeFileSync(options.posterFile, await page.screenshot({ type: 'png', animations: 'allow', caret: 'hide' }));
+        }
         frame++;
         options.onProgress?.({ size, frame, totalFrames: timeline.totalFrames });
       }
@@ -99,7 +117,26 @@ async function renderSize(browser: Browser, baseUrl: string, plan: VideoPlan, si
   } finally {
     await context.close();
   }
-  return { size, file, frames: frame, durationSeconds: frame / timeline.fps };
+  return {
+    size,
+    file,
+    frames: frame,
+    durationSeconds: frame / timeline.fps,
+    ...(options.posterFile ? { poster: options.posterFile } : {}),
+  };
+}
+
+/**
+ * Frame of the intro used as the poster: as late as possible, so entrance animations have
+ * settled, but before the runtime's 0.35s scene fade-out starts.
+ */
+export function posterFrame(sceneFrames: number, fps: number): number {
+  return Math.max(0, sceneFrames - Math.ceil(0.4 * fps) - 1);
+}
+
+/** File name of an extra export next to a video (`.png` poster, `.gif`). */
+export function siblingFile(videoFile: string, extension: string): string {
+  return videoFile.replace(/\.mp4$/i, '') + extension;
 }
 
 /**
@@ -115,9 +152,19 @@ export async function renderVideos(plan: VideoPlan, options: RenderOptions = {})
   const browser = options.browser ?? (await launchBrowser());
   const results: RenderedVideo[] = [];
   try {
+    const poster = options.poster ?? plan.config.poster;
+    const gif = options.gif ?? plan.config.gif;
     for (const size of sizes) {
       const file = path.join(outDir, videoFileName(plan, size));
-      results.push(await renderSize(browser, server.url, plan, size, file, options));
+      const video = await renderSize(browser, server.url, plan, size, file, {
+        ...options,
+        ...(poster ? { posterFile: siblingFile(file, '.png') } : {}),
+      });
+      if (gif) {
+        video.gif = siblingFile(file, '.gif');
+        await convertToGif(file, video.gif, size);
+      }
+      results.push(video);
     }
   } finally {
     if (!options.browser) await browser.close();

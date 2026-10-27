@@ -51,4 +51,24 @@ describe('end-to-end render', () => {
       expect(Number(info.format.duration)).toBeCloseTo(expected, 1);
     }
   });
+
+  it('exports a PNG poster and a GIF next to each video', async () => {
+    const outDir = mkdtempSync(path.join(tmpdir(), 'shipreel-e2e-extras-'));
+    const markdown = readFileSync(new URL('../fixtures/keep-a-changelog.md', import.meta.url), 'utf8');
+    const config = loadConfig({
+      cwd: outDir,
+      overrides: { name: 'acme-ui', sizes: '320x180', fps: 10, font: 'system-ui', outDir, maxItems: 1, poster: true, gif: true },
+    });
+    const [video] = await renderVideos(buildPlan(findRelease(markdown)!, config));
+
+    expect(video!.poster).toBe(video!.file.replace(/\.mp4$/, '.png'));
+    const png = readFileSync(video!.poster!);
+    expect(png.subarray(1, 4).toString()).toBe('PNG');
+    // PNG IHDR: width and height are big-endian at bytes 16 and 20.
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([320, 180]);
+
+    const gif = probe(video!.gif!).streams.find((s) => s.codec_type === 'video')!;
+    expect(gif.codec_name).toBe('gif');
+    expect([gif.width, gif.height]).toEqual([320, 180]);
+  });
 });

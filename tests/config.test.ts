@@ -82,6 +82,14 @@ describe('loadConfig', () => {
     }
   });
 
+  it('turns poster and GIF exports on from the file or overrides', () => {
+    expect(loadConfig({ cwd: project({}) })).toMatchObject({ poster: false, gif: false });
+    const cwd = project({ 'shipreel.config.json': { poster: true } });
+    expect(loadConfig({ cwd })).toMatchObject({ poster: true, gif: false });
+    expect(loadConfig({ cwd, overrides: { gif: true, poster: undefined } })).toMatchObject({ poster: true, gif: true });
+    expect(() => loadConfig({ cwd: project({ 'shipreel.config.json': { gif: 'yes' } }) })).toThrow(/"gif" must be true or false/);
+  });
+
   it('errors on a missing explicit config and on broken JSON', () => {
     const cwd = project({ 'shipreel.config.json': '{ nope' });
     expect(() => loadConfig({ cwd })).toThrow(/Could not parse/);

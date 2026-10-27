@@ -4,10 +4,10 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config.js';
 import { buildPlan, FALLBACK_HIGHLIGHT } from '../src/plan.js';
-import { encoderArgs } from '../src/render/encode.js';
+import { encoderArgs, gifArgs } from '../src/render/encode.js';
 import { buildSceneView, contrastColor, renderSceneDocument } from '../src/render/scene.js';
 import { BUILTIN_TEMPLATES, loadTemplate, renderString } from '../src/render/template.js';
-import { videoFileName } from '../src/render/render.js';
+import { posterFrame, siblingFile, videoFileName } from '../src/render/render.js';
 import type { ParsedRelease } from '../src/types.js';
 
 const release: ParsedRelease = {
@@ -139,5 +139,24 @@ describe('helpers', () => {
     const withMusic = encoderArgs({ file: 'out.mp4', fps: 30, durationSeconds: 20, music: 'song.mp3' });
     expect(withMusic).toEqual(expect.arrayContaining(['-stream_loop', 'song.mp3', 'aac', '20.000']));
     expect(withMusic.join(' ')).toContain('afade=t=out:st=18.50');
+  });
+
+  it('scales GIFs by their longest side and drops audio', () => {
+    const landscape = gifArgs('a.mp4', 'a.gif', { width: 1920, height: 1080 });
+    expect(landscape.join(' ')).toContain('fps=15,scale=720:-2:flags=lanczos');
+    expect(landscape).toEqual(expect.arrayContaining(['-loop', '0', '-an']));
+    expect(gifArgs('a.mp4', 'a.gif', { width: 1080, height: 1920 }).join(' ')).toContain('scale=-2:720');
+    expect(gifArgs('a.mp4', 'a.gif', { width: 320, height: 180 }).join(' ')).toContain('scale=320:-2');
+  });
+
+  it('takes the poster before the intro fades out', () => {
+    // 2s intro at 30 fps: the fade-out starts at frame 50, the poster is frame 47.
+    expect(posterFrame(60, 30)).toBe(47);
+    expect(posterFrame(3, 30)).toBe(0);
+  });
+
+  it('names posters and GIFs after their video', () => {
+    expect(siblingFile('/out/acme-v1.2.0-square.mp4', '.png')).toBe('/out/acme-v1.2.0-square.png');
+    expect(siblingFile('/out/acme-v1.2.0-square.mp4', '.gif')).toBe('/out/acme-v1.2.0-square.gif');
   });
 });

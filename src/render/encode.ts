@@ -57,6 +57,34 @@ export function encoderArgs(options: EncoderOptions): string[] {
   return args;
 }
 
+/** Longest side of exported GIFs: big enough for a README, small enough for chat. */
+export const GIF_MAX_SIDE = 720;
+
+/** ffmpeg arguments that turn an MP4 into a looping GIF with a per-video palette. */
+export function gifArgs(input: string, output: string, size: { width: number; height: number }, fps = 15): string[] {
+  const scale =
+    size.width >= size.height ? `${Math.min(GIF_MAX_SIDE, size.width)}:-2` : `-2:${Math.min(GIF_MAX_SIDE, size.height)}`;
+  return [
+    '-y', '-hide_banner', '-loglevel', 'error', '-i', input,
+    '-vf', `fps=${fps},scale=${scale}:flags=lanczos,split[a][b];[a]palettegen=max_colors=192:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle`,
+    '-loop', '0', '-an',
+    output,
+  ];
+}
+
+/** Convert a rendered MP4 into a GIF. */
+export function convertToGif(input: string, output: string, size: { width: number; height: number }): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(ffmpegPath(), gifArgs(input, output, size), { stdio: ['ignore', 'ignore', 'pipe'] });
+    let stderr = '';
+    proc.stderr.on('data', (chunk: Buffer) => {
+      stderr += chunk.toString();
+    });
+    proc.on('error', (error) => reject(new Error(`Could not start ffmpeg (${ffmpegPath()}): ${error.message}`)));
+    proc.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`ffmpeg (GIF) exited with code ${code}: ${stderr.trim()}`))));
+  });
+}
+
 /** Start ffmpeg reading JPEG frames from stdin and writing an H.264 MP4 (social-media friendly). */
 export function startEncoder(options: EncoderOptions): Encoder {
   const proc: ChildProcessWithoutNullStreams = spawn(ffmpegPath(), encoderArgs(options), { stdio: ['pipe', 'pipe', 'pipe'] });

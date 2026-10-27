@@ -100,6 +100,8 @@ async function buildPlan(): Promise<VideoPlan> {
     outDir: '',
     minDuration: 15,
     maxDuration: 30,
+    poster: false,
+    gif: false,
     source: 'web',
     ...(cta ? { cta } : {}),
     ...(/^[\w.-]+\/[\w.-]+$/.test(repo) ? { repo } : {}),

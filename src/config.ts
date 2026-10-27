@@ -28,6 +28,10 @@ export interface ShipreelConfigFile {
   minDuration?: number;
   maxDuration?: number;
   changelog?: string;
+  /** Also export a PNG poster (thumbnail) next to each video. */
+  poster?: boolean;
+  /** Also export an animated GIF next to each video. */
+  gif?: boolean;
 }
 
 export interface ResolvedConfig {
@@ -51,6 +55,8 @@ export interface ResolvedConfig {
   minDuration: number;
   maxDuration: number;
   changelog?: string;
+  poster: boolean;
+  gif: boolean;
   /** Where the config was read from, for logging. */
   source: string;
 }
@@ -69,7 +75,7 @@ export const DEFAULTS = {
 
 const KNOWN_KEYS = new Set<string>([
   'name', 'template', 'brandColor', 'logo', 'font', 'sizes', 'cta', 'ctaSecondary', 'url', 'repo',
-  'maxItems', 'maxChars', 'music', 'fps', 'outDir', 'minDuration', 'maxDuration', 'changelog', '$schema',
+  'maxItems', 'maxChars', 'music', 'fps', 'outDir', 'minDuration', 'maxDuration', 'changelog', 'poster', 'gif', '$schema',
 ]);
 
 export class ConfigError extends Error {
@@ -148,6 +154,9 @@ function validate(raw: Record<string, unknown>, source: string): ShipreelConfigF
 
   for (const key of ['name', 'template', 'brandColor', 'logo', 'font', 'cta', 'ctaSecondary', 'url', 'repo', 'music', 'outDir', 'changelog']) {
     str(key);
+  }
+  for (const key of ['poster', 'gif']) {
+    if (raw[key] !== undefined && typeof raw[key] !== 'boolean') errors.push(`"${key}" must be true or false`);
   }
   num('maxItems', 1, 10);
   num('maxChars', 20, 200);
@@ -246,6 +255,8 @@ export function loadConfig(options: LoadConfigOptions = {}): ResolvedConfig {
     outDir: resolvePath('outDir') ?? path.resolve(cwd, DEFAULTS.outDir),
     minDuration,
     maxDuration,
+    poster: merged.poster ?? false,
+    gif: merged.gif ?? false,
     source,
   };
   if (name) resolved.name = name;

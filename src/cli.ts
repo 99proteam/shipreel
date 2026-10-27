@@ -23,6 +23,8 @@ interface CommonOptions {
   cta?: string;
   fps?: number;
   maxItems?: number;
+  poster?: boolean;
+  gif?: boolean;
 }
 
 interface RenderCliOptions extends CommonOptions {
@@ -57,6 +59,8 @@ function addCommonOptions(command: Command): Command {
     .option('--name <name>', 'project name shown in the video')
     .option('--brand-color <hex>', 'brand color, e.g. #6d28d9')
     .option('--cta <text>', 'call to action in the outro, e.g. "npm i mylib@latest"')
+    .option('--poster', 'also save a PNG poster (thumbnail) next to each video')
+    .option('--gif', 'also export an animated GIF next to each video')
     .addOption(new Option('--fps <n>', 'frames per second').argParser((v) => Number.parseInt(v, 10)))
     .addOption(new Option('--max-items <n>', 'maximum highlight scenes').argParser((v) => Number.parseInt(v, 10)));
 }
@@ -72,6 +76,8 @@ function overridesFrom(options: CommonOptions & { out?: string }): ShipreelConfi
     maxItems: options.maxItems,
     outDir: options.out,
     repo: options.repo,
+    poster: options.poster,
+    gif: options.gif,
   };
 }
 
@@ -137,11 +143,22 @@ async function runRender(options: RenderCliOptions): Promise<void> {
   const started = Date.now();
   const videos = await renderVideos(plan, { onProgress: options.json ? undefined : progressReporter() });
   if (options.json) {
-    process.stdout.write(`${JSON.stringify(videos.map((v) => ({ file: v.file, size: v.size, durationSeconds: v.durationSeconds })), null, 2)}\n`);
+    const rows = videos.map((v) => ({
+      file: v.file,
+      size: v.size,
+      durationSeconds: v.durationSeconds,
+      ...(v.poster ? { poster: v.poster } : {}),
+      ...(v.gif ? { gif: v.gif } : {}),
+    }));
+    process.stdout.write(`${JSON.stringify(rows, null, 2)}\n`);
     return;
   }
   process.stderr.write(`Done in ${((Date.now() - started) / 1000).toFixed(1)}s:\n`);
-  for (const video of videos) process.stdout.write(`${path.relative(process.cwd(), video.file) || video.file}\n`);
+  for (const video of videos) {
+    for (const file of [video.file, video.poster, video.gif]) {
+      if (file) process.stdout.write(`${path.relative(process.cwd(), file) || file}\n`);
+    }
+  }
 }
 
 async function runPreview(options: PreviewCliOptions): Promise<void> {

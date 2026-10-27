@@ -7,7 +7,7 @@
   --muted: #9aa3b2;
   --accent: #a78bfa;
   --accent-2: #22d3ee;
-  --sponsor: #ffdd00;
+  --sponsor: #db61a2;
   --radius: 14px;
   color-scheme: dark;
 }
@@ -35,7 +35,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
 .btn-primary { background: var(--accent); color: #120d24; }
 .btn-ghost { border-color: var(--line); color: var(--text); background: var(--panel); }
-.btn-sponsor { background: var(--sponsor); color: #111; box-shadow: 0 6px 24px rgba(255, 221, 0, .18); }
+.btn-sponsor { background: var(--sponsor); color: #fff; box-shadow: 0 6px 24px rgba(219, 97, 162, .25); }
 .btn-xl { font-size: 20px; padding: 16px 34px; border-radius: 14px; }
 button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
 button:hover { border-color: var(--accent); }
@@ -116,7 +116,7 @@ section { padding: 72px max(16px, calc((100vw - 1180px) / 2)); }
 .steps span { color: var(--muted); font-size: 14px; }
 
 /* Sponsor */
-.sponsor { text-align: center; background: radial-gradient(700px 300px at 50% 0%, rgba(255, 221, 0, .12), transparent 70%); border-top: 1px solid var(--line); }
+.sponsor { text-align: center; background: radial-gradient(700px 300px at 50% 0%, rgba(219, 97, 162, .14), transparent 70%); border-top: 1px solid var(--line); }
 .sponsor > p { color: #c4c9d4; max-width: 620px; margin: 0 auto 24px; }
 .tiers { list-style: none; padding: 0; margin: 32px auto 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; max-width: 900px; }
 .tiers li { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 4px; }

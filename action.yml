@@ -38,6 +38,14 @@ inputs:
     description: 'Directory where videos are written.'
     required: false
     default: 'shipreel-videos'
+  poster:
+    description: 'Also save a PNG poster (thumbnail) per video and upload it with the release. Overrides the config file.'
+    required: false
+    default: ''
+  gif:
+    description: 'Also export an animated GIF per video and upload it with the release. Overrides the config file.'
+    required: false
+    default: ''
 
 outputs:
   videos:
@@ -52,6 +60,12 @@ outputs:
   asset-urls:
     description: 'Newline-separated download URLs of the uploaded release assets.'
     value: ${{ steps.render.outputs.asset-urls }}
+  posters:
+    description: 'Newline-separated list of PNG poster paths (when poster is enabled).'
+    value: ${{ steps.render.outputs.posters }}
+  gifs:
+    description: 'Newline-separated list of GIF paths (when gif is enabled).'
+    value: ${{ steps.render.outputs.gifs }}
 
 runs:
   using: 'composite'
@@ -89,4 +103,6 @@ runs:
         INPUT_TAG: ${{ inputs.tag }}
         INPUT_CHANGELOG: ${{ inputs.changelog }}
         INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
+        INPUT_POSTER: ${{ inputs.poster }}
+        INPUT_GIF: ${{ inputs.gif }}
       run: node "${{ github.action_path }}/dist/action.js"

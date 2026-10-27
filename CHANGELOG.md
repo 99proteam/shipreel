@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Poster export: `--poster`, `"poster": true` or the Action's `poster` input saves `<video>.png`, the settled intro title card, next to each video (for thumbnails and link previews).
+- GIF export: `--gif`, `"gif": true` or the Action's `gif` input saves a looping GIF (15 fps, longest side 720 px) next to each video.
+- The Action uploads posters and GIFs with the videos and exposes them as `posters` and `gifs` outputs.
+- GitHub Sponsors is now the main way to support the project (goal: $5,000/month).
+
 ### Fixed
 
 - GitHub Action no longer fails at the Chromium cache step (`hashFiles` outside the workspace)
