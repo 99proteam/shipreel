@@ -1,6 +1,6 @@
 {
   "name": "shipreel",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Turn release notes and CHANGELOG.md into a short branded announcement video for X, LinkedIn, Instagram and YouTube Shorts. CLI, library and GitHub Action.",
   "keywords": [
     "release-notes",

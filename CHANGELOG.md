@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-27
+
 ### Added
 
 - Poster export: `--poster`, `"poster": true` or the Action's `poster` input saves `<video>.png`, the settled intro title card, next to each video (for thumbnails and link previews).
@@ -33,5 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `shipreel preview` to scrub through scenes in the browser before rendering
 - Typed library API
 
-[Unreleased]: https://github.com/99proteam/shipreel/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/99proteam/shipreel/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/99proteam/shipreel/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/99proteam/shipreel/releases/tag/v1.0.0

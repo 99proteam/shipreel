@@ -346,6 +346,8 @@ No. shipreel is MIT-licensed, runs on free GitHub Actions minutes for public rep
 
 ## 💜 Support this project
 
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/99proteam?label=sponsors&logo=githubsponsors&logoColor=white&color=db61a2)](https://github.com/sponsors/99proteam) **Goal: $5,000/month** · [see live progress](https://github.com/sponsors/99proteam)
+
 shipreel is free and MIT-licensed. If it saves you time on every release, please become a sponsor on **[GitHub Sponsors](https://github.com/sponsors/99proteam)**. Our goal is **$5,000 a month** so shipreel can be maintained full time and ship new templates and auto-posting sooner.
 
 <p align="center">
